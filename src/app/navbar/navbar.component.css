@@ -1,0 +1,23 @@
+
+.spacing{
+padding: 10px;
+text-justify: auto;
+font-weight: 350px;
+font-size: large;
+font-style: inherit;
+text-decoration: none;
+}
+a:link{
+    color: white;
+    background-color: transparent;
+    text-decoration: none;
+}
+a.active:focus{
+    background-color: transparent;
+    color: rgb(14, 12, 13);  
+}
+.navbar-inverse{
+    background-color: blueviolet;
+    margin: 0.2px;
+    font-size: large;
+}
