@@ -6,7 +6,15 @@
       <ul class="nav navbar-right">
         <li class="spacing"><a routerLink="/home" routerLinkActive="active">Home</a></li>&nbsp;
         <li class="spacing"><a routerLink="/signup" routerLinkActive="active">SignUp</a></li>&nbsp;
-        <li class="spacing"><a routerLink="/login" routerLinkActive="active">Login</a></li>&nbsp;
+        <div *ngIf="loggedIn;else condition1"></div>
+        <ng-template #condition1>
+          <li class="spacing"><a routerLink="/login" routerLinkActive="active">Login</a></li>
+          &nbsp;
+        </ng-template>
+        <ng-template #condition2>
+          <li class="spacing"><a routerLink="/logout" routerLinkActive="active">Logout</a></li>&nbsp;
+        </ng-template>
+      
         <li class="spacing"><a routerLink="/about-us" routerLinkActive="active">About us</a></li>&nbsp;
       </ul>
     </div>

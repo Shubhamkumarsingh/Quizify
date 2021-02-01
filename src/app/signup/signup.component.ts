@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators} from '@angular/forms';
 @Component({
@@ -10,11 +11,11 @@ export class SignupComponent implements OnInit {
   firstName : String = "";
   lastName : String  = "";
   username : String = "";
-  emailId : String = "";
+  email : String = "";
   password : String = "";
-  confirmpassword : String = "";
+  role : String = "";
   formdata: any;
-  constructor() { 
+  constructor(private http : HttpClient) { 
     this.formdata = new FormGroup({
       firstName : new FormControl("", Validators.compose([
         Validators.required
@@ -25,14 +26,15 @@ export class SignupComponent implements OnInit {
       username : new FormControl("", Validators.compose([
         Validators.required
       ])),
-      emailId: new FormControl("", Validators.compose([
+      email: new FormControl("", Validators.compose([
         Validators.required,
         Validators.pattern("[^ @]*@[^ @]*")
       ])),
       password: new FormControl("", Validators.compose([
         Validators.required,
         Validators.minLength(8)
-      ]))
+      ])),
+      role : new FormControl("ROLE_USER")
       //confirmpassword : new FormControl("", )
     });
 
@@ -50,6 +52,13 @@ export class SignupComponent implements OnInit {
   onClickSubmit(data: any){
     console.log(data);
     this.formdata.reset();
+    this.http.post("http://localhost:8080/api/auth/signup",data).subscribe( 
+      signupData => {
+        console.log(signupData);
+      }, err => {
+        console.log(err);
+      }
+    )    
   }
 
 }

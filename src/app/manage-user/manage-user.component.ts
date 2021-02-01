@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators, FormsModule } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -17,14 +18,9 @@ export class ManageUserComponent implements OnInit {
   emailId : String = "";
   password : String = "";
 
-  dataUpdate : Users = {
-  "firstName": "Shubham",
-  "lastName" : "Singh",
-  "userName" : "shubham@singh",
-  "emailId" : "sshubham@gmail.com"
-  };
-
-  users = [
+  dataUpdate : any;
+  users : any;
+  /* users = [
     {
      "firstName": "Shubham",
     "lastName" : "Singh",
@@ -43,9 +39,9 @@ export class ManageUserComponent implements OnInit {
     "userName" : "randomguy",
     "emailId" : "random@fiy.com"
     }
-  ];
+  ]; */
   formdata: any;
-  constructor(private modal : NgbModal) { 
+  constructor(private modal : NgbModal, private http : HttpClient) { 
     this.formdata = new FormGroup({
       firstName : new FormControl("", Validators.compose([
         Validators.required
@@ -56,21 +52,31 @@ export class ManageUserComponent implements OnInit {
       username : new FormControl("", Validators.compose([
         Validators.required
       ])),
-      emailId: new FormControl("", Validators.compose([
+      email: new FormControl("", Validators.compose([
         Validators.required,
         Validators.pattern("[^ @]*@[^ @]*")
       ])),
       password: new FormControl("", Validators.compose([
         Validators.required,
         Validators.minLength(8)
-      ]))
+      ])),
+      role: new FormControl("ROLE_MODERATOR")
     });
 
   }
 
   ngOnInit(): void {
+    this.getAllUsers();
   }
 
+  getAllUsers() : void {
+    this.http.get("http://localhost:8080/api/admin/alluser").subscribe((allUsers : any) => {
+      this.users = allUsers;
+    },
+    err => {
+
+    })
+  }
   openModal(content : any){
     this.modal.open(content);
     console.log(content);
@@ -87,6 +93,13 @@ export class ManageUserComponent implements OnInit {
   }
   onClickSubmit(data: any){
     console.log(data);
+    this.http.post("http://localhost:8080/api/admin/add",data).subscribe((addUserData : any) => {
+      alert('User added successfully');
+      this.getAllUsers();
+      this.closeModal();
+    },err => {
+
+    })
     this.formdata.reset();
   }
   delete(data : Users, i : number){
@@ -103,5 +116,17 @@ export class ManageUserComponent implements OnInit {
   onSubmit( updateFormData : Users){
     console.log("onSubmit");
     console.log(JSON.stringify(updateFormData));
+    this.http.post("http://localhost:8080/api/admin/update",updateFormData).subscribe((updateUserData : any) => {
+      alert('User updated successfully');
+      this.getAllUsers();
+      this.closeModal();
+    },err => {
+
+    })
+  }
+  addUser(data: any){
+    console.log(data);
+    this.formdata.reset();
+    
   }
 }

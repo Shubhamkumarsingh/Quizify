@@ -11,6 +11,7 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { HomeComponent } from './home/home.component';
 import { RouterModule } from '@angular/router';
 import { ManageUserComponent } from './manage-user/manage-user.component';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -27,10 +28,12 @@ import { ManageUserComponent } from './manage-user/manage-user.component';
     ReactiveFormsModule,
     NgbModule,
     FormsModule,
+    HttpClientModule,
     RouterModule.forRoot([  
     {path: 'home', component: HomeComponent},
     {path: 'signup', component: SignupComponent},
-    {path: 'login', component: LoginComponent}
+    {path: 'login', component: LoginComponent},
+    {path: 'manageUser', component : ManageUserComponent}
   ])
   ],
   providers: [],
